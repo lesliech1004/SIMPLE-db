@@ -1,0 +1,25 @@
+import sys
+import logging
+sys.path.append(".")
+from astropy.io import ascii
+from simple import REFERENCE_TABLES
+from astrodb_utils import load_astrodb
+from astrodb_utils.sources import logger
+
+astrodb_utils_logger = logging.getLogger("astrodb_utils")
+logger.setLevel(logging.DEBUG)  # Set logger to INFO/DEBUG/WARNING/ERROR/CRITICAL level
+astrodb_utils_logger.setLevel(logging.DEBUG)
+
+SAVE_DB = False  # save the data files in addition to modifying the .db file
+RECREATE_DB = True  # recreates the .db file from the data files
+SCHEMA_PATH = "simple/schema.yaml"
+
+from astrodb_utils.sources import simbad_name_resolvable
+db = load_astrodb(
+    "SIMPLE.sqlite",
+    recreatedb=RECREATE_DB,
+    reference_tables=REFERENCE_TABLES,
+    felis_schema=SCHEMA_PATH,
+)
+
+print(simbad_name_resolvable(db=db, source = "NAME HD 130948BC"))
